@@ -1,0 +1,8 @@
+.idea/
+example_data/zl_output/rand_data/
+text_renderer/__pycache__/
+text_renderer/config/__pycache__/
+text_renderer/corpus/__pycache__/
+text_renderer/effect/__pycache__/
+text_renderer/layout/__pycache__/
+text_renderer/utils/__pycache__/

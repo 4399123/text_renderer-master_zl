@@ -244,11 +244,15 @@ class Render:
         if self.cfg.gray:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-        if self.cfg.height != -1 and self.cfg.height != image.shape[0]:
+        target_height = self.cfg.height
+        if isinstance(target_height, (list, tuple)) and len(target_height) == 2:
+            target_height = np.random.randint(target_height[0], target_height[1] + 1)
+
+        if target_height != -1 and target_height != image.shape[0]:
             height, width = image.shape[:2]
-            width = int(width // (height / self.cfg.height))
+            width = int(width // (height / target_height))
             image = cv2.resize(
-                image, (width, self.cfg.height), interpolation=cv2.INTER_CUBIC
+                image, (width, target_height), interpolation=cv2.INTER_CUBIC
             )
 
         return image

@@ -10,15 +10,19 @@ class FontText:
     font_path: str
     horizontal: bool = True
 
+    def _getbbox(self, text: str):
+        """Return (left, top, right, bottom) bounding box for text."""
+        return self.font.getbbox(text)
+
     @property
     def xy(self):
-        offset = self.font.getoffset(self.text)
-        left, top, right, bottom = self.font.getmask(self.text).getbbox()
-        return 0 - offset[0] - left, 0 - offset[1]
+        left, top, right, bottom = self._getbbox(self.text)
+        return -left, -top
 
     @property
     def offset(self):
-        return self.font.getoffset(self.text)
+        left, top, right, bottom = self._getbbox(self.text)
+        return left, top
 
     @property
     def size(self) -> [int, int]:
@@ -29,14 +33,10 @@ class FontText:
             width, height
         """
         if self.horizontal:
-            offset = self.font.getoffset(self.text)
-            size = self.font.getsize(self.text)
-            width = size[0] - offset[0]
-            height = size[1] - offset[1]
-            left, top, right, bottom = self.font.getmask(self.text).getbbox()
-            return right - left, height
+            left, top, right, bottom = self._getbbox(self.text)
+            return right - left, bottom - top
         else:
-            widths = [self.font.getsize(c)[0] - self.font.getoffset(c)[0] for c in self.text]
-            width = max(widths)
-            height = sum([self.font.getsize(c)[1] for c in self.text]) - self.font.getoffset(self.text[0])[1]
+            bboxes = [self._getbbox(c) for c in self.text]
+            width = max(b[2] - b[0] for b in bboxes)
+            height = sum(b[3] - b[1] for b in bboxes)
             return height, width

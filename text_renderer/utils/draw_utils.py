@@ -53,7 +53,8 @@ def draw_text_on_bg(
     heights = []
 
     for c in font_text.text:
-        size = font_text.font.getsize(c)
+        left, top, right, bottom = font_text.font.getbbox(c)
+        size = (right - left, bottom - top)
         chars_size.append(size)
         widths.append(size[0])
         heights.append(size[1])

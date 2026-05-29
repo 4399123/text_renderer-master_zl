@@ -1,1 +1,4 @@
 simsun.ttf
+times.ttf
+simkai.ttf
+simhei.ttf

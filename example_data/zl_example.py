@@ -50,7 +50,7 @@ def base_cfg(
     name: str, corpus, corpus_effects=None, layout_effects=None, layout=None, gray=True
 ):
     return GeneratorCfg(
-        num_image=30,
+        num_image=2000,
         save_dir=OUT_DIR / name,
         render_cfg=RenderCfg(
             bg_dir=BG_DIR,
@@ -109,7 +109,7 @@ def rand_data():
         corpus=RandCorpus(
             RandCorpusCfg(chars_file=CHAR_DIR / "eng_with_dig.txt",
                           length=(3,30),
-                          text_color_cfg=FixedTextColorCfg(), ##固定为黑色字体
+                          # text_color_cfg=FixedTextColorCfg(), ##固定为黑色字体
                           **font_cfg),
         ),
     )
@@ -125,8 +125,8 @@ def eng_word_data():
         corpus=WordCorpus(
             WordCorpusCfg(
                 text_paths=[TEXT_DIR / "pack_text.txt"],   #需要用脚本提前写好大量单词
-                filter_by_chars=True,                      #从text_paths过滤chars_file不存在的字符
-                chars_file=CHAR_DIR / "eng_with_dig.txt",
+                # filter_by_chars=True,                      #从text_paths过滤chars_file不存在的字符
+                # chars_file=CHAR_DIR / "eng_with_dig.txt",
                 # text_color_cfg=FixedTextColorCfg(), ##固定为黑色字体
                 num_word=(1,1),
                 **font_cfg

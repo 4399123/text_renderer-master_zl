@@ -5,8 +5,8 @@ from glob import glob
 from tqdm import tqdm
 import shutil
 
-inputpath=r'./rand_data'
-outpath=r'./rand_data/renamefiles_rand_data'
+inputpath=r'./chn_data'
+outpath=r'./chn_data/renamefiles_chn_data'
 
 if not os.path.exists(outpath):
     os.makedirs(outpath)

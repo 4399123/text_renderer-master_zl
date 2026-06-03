@@ -7,3 +7,6 @@ text_renderer/effect/__pycache__/
 text_renderer/layout/__pycache__/
 text_renderer/utils/__pycache__/
 1_DataSetGet/out/
+1_DataSetGet/ch/
+1_DataSetGet/en/
+example_data/zl_output/chn_data/

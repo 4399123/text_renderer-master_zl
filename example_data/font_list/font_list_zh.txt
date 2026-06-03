@@ -1,0 +1,3 @@
+simsun.ttf
+simkai.ttf
+simhei.ttf

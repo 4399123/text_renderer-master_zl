@@ -29,6 +29,11 @@ font_cfg = dict(
     font_list_file=FONT_LIST_DIR / "font_list.txt",
     font_size=(640, 800),   #（最小，最大）
 )
+font_cfg_zh = dict(
+    font_dir=FONT_DIR,
+    font_list_file=FONT_LIST_DIR / "font_list_zh.txt",  #去除了有些无法显示中文的字符库
+    font_size=(640, 800),
+)
 
 perspective_transform = NormPerspectiveTransformCfg(20, 20, 1.5)
 
@@ -36,12 +41,13 @@ perspective_transform = NormPerspectiveTransformCfg(20, 20, 1.5)
 def get_char_corpus():
     return CharCorpus(
         CharCorpusCfg(
-            text_paths=[TEXT_DIR / "chn_text.txt", TEXT_DIR / "eng_text.txt"],
+            text_paths=[TEXT_DIR / "chn_text.txt", TEXT_DIR / "eng_text.txt",TEXT_DIR / "en_dig_text.txt"],
             filter_by_chars=True,
             chars_file=CHAR_DIR / "chn.txt",
-            length=(5, 10),
-            char_spacing=(-0.3, 1.3),
-            **font_cfg
+            length=(2, 20),
+            # char_spacing=(-0.3, 1.3),
+            # text_color_cfg=FixedTextColorCfg(),  # 固定文字颜色为黑色
+            **font_cfg_zh
         ),
     )
 
@@ -49,6 +55,13 @@ def get_char_corpus():
 def base_cfg(
     name: str, corpus, corpus_effects=None, layout_effects=None, layout=None, gray=True
 ):
+    # 如果没有指定 corpus_effects，使用默认效果
+    if corpus_effects is None:
+        corpus_effects = Effects([
+            Line(0.8, thickness=(2, 10),),
+            # OneOf([DropoutRand(), DropoutVertical()]),
+        ])
+    
     return GeneratorCfg(
         num_image=2000,
         save_dir=OUT_DIR / name,
@@ -60,12 +73,7 @@ def base_cfg(
             layout_effects=layout_effects,
             layout=layout,
             corpus=corpus,
-            corpus_effects=Effects(
-            [
-                Line(0.8, thickness=(2, 10),),
-                OneOf([DropoutRand(), DropoutVertical()]),
-            ])
-
+            corpus_effects=corpus_effects  # 使用参数而不是硬编码
         ),
     )
 
@@ -77,7 +85,7 @@ def chn_data():
         corpus_effects=Effects(
             [
                 Line(0.5, color_cfg=FixedTextColorCfg()),
-                OneOf([DropoutRand(), DropoutVertical()]),
+                # OneOf([DropoutRand(), DropoutVertical()]),
             ]
         ),
     )
@@ -139,9 +147,9 @@ def eng_word_data():
 # fmt: off
 # The configuration file must have a configs variable
 configs = [
-    # chn_data(),
+    chn_data(),           #生成中文、英文单词and数字数据
     # enum_data(),
-    rand_data(),        #生成随机长度字符数据
+    # rand_data(),        #生成随机长度字符数据
     # eng_word_data(),  #生成英文单词and数字数据
 ]
 # fmt: on
